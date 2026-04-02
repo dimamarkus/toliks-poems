@@ -14,16 +14,16 @@ export default async function PoemPage({ params }: { params: Promise<{ slug: str
     <div className="min-h-screen">
       <SiteHeader />
       <main className="container mx-auto px-4 py-8">
-        <article className="paper p-8 mx-auto flex flex-col relative" style={{ width: "clamp(48ch, 70vw, 80ch)", minHeight: "calc(1.4142 * clamp(48ch, 70vw, 80ch))" }}>
+        <article className="paper relative mx-auto flex w-full max-w-[80ch] flex-col p-6 md:p-8">
           {poemData.sticky && (
             <div className="absolute -top-4 left-1/2 -translate-x-1/2 z-10">
               <Image src="/images/thumbtack.png" alt="Sticky" width={44} height={44} />
             </div>
           )}
           {poem.title && (
-            <h1 className="heading text-4xl md:text-5xl font-bold mb-4">{poem.title}</h1>
+            <h1 className="heading mb-4 text-3xl font-bold sm:text-4xl md:text-5xl">{poem.title}</h1>
           )}
-          <div className="prose max-w-none typewriter" dangerouslySetInnerHTML={{ __html: poem.content || "" }} />
+          <div className="prose prose-sm max-w-none typewriter sm:prose-base" dangerouslySetInnerHTML={{ __html: poem.content || "" }} />
           <div className="mt-auto space-y-2 pt-4">
             {/* tags bottom placeholder if available later */}
             <div className="text-sm poem-date">
