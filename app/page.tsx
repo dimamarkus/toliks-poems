@@ -3,6 +3,7 @@ import { SiteHeader } from "../components/SiteHeader";
 import { fetchPoemsPaged, searchPoems } from "../lib/adapters/poems-adapter";
 import { Pagination } from "../components/Pagination";
 import { NumericPagination } from "../components/NumericPagination";
+import { OrderedColumns } from "../components/OrderedColumns";
 import { PoemCard } from "../components/PoemCard";
 import { formatRuDate } from "../lib/format/ru-date";
 import { TopFilterSelects } from "../components/TopFilterSelects";
@@ -37,6 +38,42 @@ export default async function HomePage({ searchParams }: { searchParams?: Promis
     if (d) return `Стихи ${d}-е`;
     return "Стихи";
   })();
+
+  const renderPoemEntry = (p: (typeof poems)[number]) => {
+    const poemData = p.data as PoemContentData;
+    const written = poemData.writtenAtText ?? undefined;
+    const published = formatRuDate(p.date || undefined);
+    const dateLabel = [
+      written ? `Написано: ${written}` : null,
+      published ? `Опубликовано: ${published}` : null,
+    ]
+      .filter(Boolean)
+      .join(" · ");
+    const hasImage = Boolean(poemData.hasImage);
+    const hasEmbed = Boolean(poemData.hasEmbed);
+
+    return (
+      <article className="min-w-0" key={p.id}>
+        <PoemCard
+          title={p.title}
+          slug={p.slug || ""}
+          date={dateLabel}
+          themes={poemData.themes}
+          themeSlugs={poemData.themeSlugs}
+          contentHtml={p.content || undefined}
+          highlightQuery={searching ? query : undefined}
+        />
+        {(hasImage || hasEmbed) && (
+          <p className="mt-2 text-[11px] opacity-60">
+            {hasImage ? "Contains images" : ""}
+            {hasImage && hasEmbed ? " · " : ""}
+            {hasEmbed ? "Contains embeds" : ""}
+          </p>
+        )}
+      </article>
+    );
+  };
+
   return (
     <div className="min-h-screen">
       <SiteHeader />
@@ -58,37 +95,7 @@ export default async function HomePage({ searchParams }: { searchParams?: Promis
             </div>
           </div>
         ) : (
-          <div className="masonry">
-          {poems.map((p) => {
-            const poemData = p.data as PoemContentData;
-            const written = poemData.writtenAtText ?? undefined;
-            const published = formatRuDate(p.date || undefined);
-            const dateLabel = [
-              written ? `Написано: ${written}` : null,
-              published ? `Опубликовано: ${published}` : null,
-            ]
-              .filter(Boolean)
-              .join(" · ");
-            const hasImage = Boolean(poemData.hasImage);
-            const hasEmbed = Boolean(poemData.hasEmbed);
-            return (
-              <article className="masonry-item" key={p.id}>
-                <PoemCard
-                  title={p.title}
-                  slug={p.slug || ""}
-                  date={dateLabel}
-                  themes={poemData.themes}
-                  themeSlugs={poemData.themeSlugs}
-                  contentHtml={p.content || undefined}
-                  highlightQuery={searching ? query : undefined}
-                />
-                {(hasImage || hasEmbed) && (
-                  <p className="mt-2 text-[11px] opacity-60">{hasImage ? "Contains images" : ""}{hasImage && hasEmbed ? " · " : ""}{hasEmbed ? "Contains embeds" : ""}</p>
-                )}
-              </article>
-            );
-          })}
-        </div>
+          <OrderedColumns>{poems.map(renderPoemEntry)}</OrderedColumns>
         )}
         {/* Prefer full UI if totalPages known; else show simple prev/next; hide when searching */}
         {!searching && poems.length > 0 && (totalPages ? (

@@ -67,40 +67,9 @@ body {
   position: relative;
   display: flex;
   flex-direction: column;
-  aspect-ratio: 1 / 1.4142; /* A-series paper proportion: width/height */
-  min-height: auto; /* allow content to stretch beyond aspect ratio */
   transition:
     box-shadow 300ms ease,
     transform 300ms ease;
-}
-/* In listing/masonry context, let content define height */
-.js-item .poem-card {
-  aspect-ratio: auto; /* always expand to content, no cropping */
-  height: auto;
-  min-height: 0;
-  overflow: visible;
-}
-
-/* Horizontal gutter between columns and vertical spacing */
-.js-item {
-  padding: 0 1rem 2rem 1rem; /* 16px side gutters, 32px bottom */
-  box-sizing: border-box;
-}
-
-/* Responsive poem grid with row-major ordering */
-.masonry {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: 2rem;
-  align-items: start;
-}
-@media (min-width: 768px) {
-  .masonry {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-.masonry-item {
-  min-width: 0;
 }
 
 /* Remove old ShuffleJS-specific hiding */
