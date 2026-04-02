@@ -16,9 +16,9 @@ export function SiteHeader() {
         </Link>
         <nav className="flex flex-wrap items-center gap-3 sm:gap-4 text-sm md:text-base">
           <Link href="/about" className="ink-link">Обо мне</Link>
-          <Link href="/api/random">
-            <Button size="sm" weight="hollow" text="Случайное" />
-          </Link>
+          <Button asChild size="sm" weight="hollow">
+            <Link href="/api/random">Случайное</Link>
+          </Button>
           {isSignedIn ? (
             <UserButton userProfileUrl="/profile" />
           ) : null}
