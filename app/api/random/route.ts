@@ -3,8 +3,7 @@ import { fetchPoemsPaged } from "../../../lib/adapters/poems-adapter";
 
 export const dynamic = "force-dynamic";
 
-export async function GET() {
-  const baseUrl = process.env.SITE_URL || "http://localhost:3004";
+export async function GET(request: Request) {
   try {
     const first = await fetchPoemsPaged({ page: 1, limit: 1, kind: "published" });
     const totalPages = first.totalPages && first.totalPages > 0 ? first.totalPages : 1;
@@ -15,7 +14,7 @@ export async function GET() {
       const pick = await fetchPoemsPaged({ page: randomPage, limit: 1, kind: "published" });
       const poem = pick.items[0];
       if (poem?.slug) {
-        return NextResponse.redirect(new URL(`/poems/${poem.slug}`, baseUrl));
+        return NextResponse.redirect(new URL(`/poems/${poem.slug}`, request.url));
       }
     }
   } catch {
@@ -26,13 +25,13 @@ export async function GET() {
     const fallback = await fetchPoemsPaged({ page: 1, limit: 1, kind: "published" });
     const poem = fallback.items[0];
     if (poem?.slug) {
-      return NextResponse.redirect(new URL(`/poems/${poem.slug}`, baseUrl));
+      return NextResponse.redirect(new URL(`/poems/${poem.slug}`, request.url));
     }
   } catch {
     // ignore and fall through to final redirect
   }
 
-  return NextResponse.redirect(new URL(`/`, baseUrl));
+  return NextResponse.redirect(new URL(`/`, request.url));
 }
 
 
