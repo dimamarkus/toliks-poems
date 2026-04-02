@@ -1,0 +1,298 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+/* Light theme specific tweaks */
+:root {
+  --background: #f9f1df;
+  --foreground: #16213f;
+  --primary: #3b63c6;
+  --primary-foreground: #ffffff;
+  --muted: rgba(59, 99, 198, 0.07);
+  --muted-foreground: rgba(59, 99, 198, 0.72);
+  --border: rgba(59, 99, 198, 0.28);
+  --page-bg: #f9f1df; /* beige-yellowish light white */
+  --paper-bg: #ffffff;
+  --paper-border: rgba(59, 99, 198, 0.11);
+  --link-ink: #3155b0;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+}
+
+/* Enforce beige background app-wide */
+html,
+body {
+  background-color: var(--page-bg) !important;
+}
+
+/* Dark theme tokens */
+.dark {
+  --background: #0e1116;
+  --foreground: #ededed;
+  --primary: #9bc1ff;
+  --primary-foreground: #0f172a;
+  --muted: rgba(255, 255, 255, 0.08);
+  --muted-foreground: rgba(255, 255, 255, 0.72);
+  --border: rgba(147, 197, 253, 0.24);
+  --page-bg: #0e1116; /* deep ink/navy */
+  --paper-bg: #111827; /* charcoal paper */
+  --paper-border: rgba(147, 197, 253, 0.12);
+  --link-ink: #93c5fd;
+}
+
+.paper {
+  background: var(--paper-bg);
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.06),
+    0 4px 14px rgba(0, 0, 0, 0.08);
+  border-radius: 0;
+  border: 1px solid var(--paper-border);
+}
+
+.typewriter {
+  font-family:
+    ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+  letter-spacing: 0.01em;
+}
+
+.poem-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  aspect-ratio: 1 / 1.4142; /* A-series paper proportion: width/height */
+  min-height: auto; /* allow content to stretch beyond aspect ratio */
+  transition:
+    box-shadow 300ms ease,
+    transform 300ms ease;
+}
+/* In listing/masonry context, let content define height */
+.js-item .poem-card {
+  aspect-ratio: auto; /* always expand to content, no cropping */
+  height: auto;
+  min-height: 0;
+  overflow: visible;
+}
+
+/* Horizontal gutter between columns and vertical spacing */
+.js-item {
+  padding: 0 1rem 2rem 1rem; /* 16px side gutters, 32px bottom */
+  box-sizing: border-box;
+}
+
+/* Masonry grid helpers (pure CSS) */
+.masonry {
+  column-count: 1;
+  column-gap: 2rem;
+}
+@media (min-width: 768px) {
+  .masonry {
+    column-count: 2; /* two columns on md+ */
+  }
+}
+.masonry-item {
+  break-inside: avoid;
+  margin-bottom: 2rem;
+}
+
+/* Remove old ShuffleJS-specific hiding */
+
+.poem-card:hover {
+  box-shadow:
+    0 2px 6px rgba(0, 0, 0, 0.08),
+    0 10px 24px rgba(0, 0, 0, 0.12);
+}
+
+/* Folded corner effect */
+.poem-card::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 0;
+  height: 0;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.2)),
+    linear-gradient(135deg, rgba(0, 0, 0, 0.16), rgba(0, 0, 0, 0));
+  clip-path: polygon(0 0, 100% 0, 100% 100%);
+  transition:
+    width 600ms cubic-bezier(0.22, 0.61, 0.36, 1),
+    height 600ms cubic-bezier(0.22, 0.61, 0.36, 1),
+    box-shadow 600ms ease;
+  box-shadow: -3px 3px 8px rgba(0, 0, 0, 0.12);
+  pointer-events: none;
+}
+.poem-card:hover::after {
+  width: 84px;
+  height: 84px;
+}
+/* Dark mode adjustment for folded corner */
+.dark .poem-card::after {
+  background:
+    linear-gradient(135deg, rgba(30, 41, 59, 0.9), rgba(30, 41, 59, 0.2)),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0));
+  box-shadow: -3px 3px 10px rgba(0, 0, 0, 0.4);
+}
+
+.poem-card:hover {
+  transform: translateY(-3px);
+}
+
+.poem-title {
+  color: inherit;
+}
+
+/* Clickable corner overlay */
+.poem-corner-link {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 84px;
+  height: 84px;
+  clip-path: polygon(0 0, 100% 0, 100% 100%);
+  z-index: 2;
+  text-indent: -9999px;
+}
+
+/* Ensure poem content respects theme colors */
+.prose {
+  color: inherit;
+}
+.prose h1,
+.prose h2,
+.prose h3,
+.prose h4,
+.prose h5,
+.prose h6 {
+  color: inherit;
+}
+
+/* Poem content overrides - avoid dark blocks for <pre>/<code> */
+.prose pre,
+.prose pre code,
+.prose code {
+  background: transparent !important;
+  color: inherit !important;
+  box-shadow: none !important;
+}
+.prose pre {
+  padding: 0 !important;
+  border-radius: 0 !important;
+  white-space: pre-wrap; /* wrap long lines by default */
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+/* Generic embeds */
+.embed iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+.aspect-video {
+  position: relative;
+  width: 100%;
+  padding-bottom: 56.25%;
+}
+.aspect-video iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.image-placeholder {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: repeating-linear-gradient(
+    45deg,
+    rgba(0, 0, 0, 0.04),
+    rgba(0, 0, 0, 0.04) 10px,
+    rgba(0, 0, 0, 0.08) 10px,
+    rgba(0, 0, 0, 0.08) 20px
+  );
+  border: 1px dashed rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(0, 0, 0, 0.5);
+  font-size: 12px;
+  margin-bottom: 0.75rem;
+}
+
+/* Sticky filter bar wrapper */
+.sticky-filters {
+  position: sticky;
+  top: 0; /* below browser chrome; our header is not fixed, so 0 works */
+  z-index: 30;
+  background: var(--page-bg);
+  border-bottom: 1px solid color-mix(in srgb, var(--primary) 22%, transparent);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+}
+/* When sticky bar is stuck, give it a soft paper-like background */
+.sticky-filters--stuck {
+  /* class retained for compatibility; base style already applied above */
+}
+/* (old strip filter styles removed) */
+/* WordPress preformatted block often includes excessive leading spaces. Collapse them. */
+.prose pre.wp-block-preformatted {
+  white-space: pre-line !important; /* preserve newlines, collapse spaces */
+}
+
+/* Heading font helper (Amatic SC) */
+.heading {
+  font-family:
+    var(--font-amatic),
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    Segoe UI,
+    Roboto,
+    Helvetica,
+    Arial,
+    "Apple Color Emoji",
+    "Segoe UI Emoji";
+  letter-spacing: 0.02em;
+}
+
+/* Ink link styling */
+.ink-link,
+.prose a,
+.poem-title a {
+  color: var(--link-ink);
+  text-underline-offset: 2px;
+}
+.ink-link:hover,
+.prose a:hover,
+.poem-title a:hover {
+  text-decoration: underline;
+}
+
+/* Ensure top header matches beige background */
+header {
+  background-color: var(--page-bg) !important;
+}
+
+/* Subdued date text */
+.poem-date {
+  opacity: 0.6;
+}
+
+/* Search highlight */
+mark.search-hit {
+  background: #fde68a;
+  padding: 0 2px;
+  border-radius: 2px;
+}
+
+/* Unified hollow input background to match filter buttons */
+.hollow-field {
+  background-color: var(--page-bg) !important;
+}
