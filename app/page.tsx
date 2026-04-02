@@ -72,7 +72,7 @@ export default async function HomePage({ searchParams }: { searchParams?: Promis
             const hasImage = Boolean(poemData.hasImage);
             const hasEmbed = Boolean(poemData.hasEmbed);
             return (
-              <article className="masonry-item align-top pb-12" key={p.id}>
+              <article className="masonry-item" key={p.id}>
                 <PoemCard
                   title={p.title}
                   slug={p.slug || ""}
