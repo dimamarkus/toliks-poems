@@ -11,6 +11,11 @@ A small WordPress-powered poetry site with a dummy-data fallback.
 - lint: `pnpm lint`
 - types: `pnpm check-types`
 
+## Runtime
+
+- Node: `24.x`
+- Package manager: `pnpm@10.21.0`
+
 ## Env
 
 Copy `env.example` to `.env.local`.
