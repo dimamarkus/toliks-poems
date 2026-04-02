@@ -2,7 +2,7 @@
 import Link from "next/link";
 import { UserButton, useUser } from "@clerk/nextjs";
 import { ThemeToggle } from "./theme-toggle";
-import { Button } from "./ui/button";
+import { getButtonClassName } from "./ui/button";
 
 export function SiteHeader() {
   const { isSignedIn } = useUser();
@@ -16,9 +16,12 @@ export function SiteHeader() {
         </Link>
         <nav className="flex flex-wrap items-center gap-3 sm:gap-4 text-sm md:text-base">
           <Link href="/about" className="ink-link">Обо мне</Link>
-          <Button asChild size="sm" weight="hollow">
-            <Link href="/api/random">Случайное</Link>
-          </Button>
+          <Link
+            href="/api/random"
+            className={getButtonClassName({ size: "sm", weight: "hollow" })}
+          >
+            Случайное
+          </Link>
           {isSignedIn ? (
             <UserButton userProfileUrl="/profile" />
           ) : null}

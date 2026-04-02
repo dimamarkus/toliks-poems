@@ -4,8 +4,8 @@ import * as React from "react";
 import { Slot } from "@radix-ui/react-slot";
 import { cn } from "../../lib/utils/cn";
 
-type ButtonSize = "default" | "sm" | "lg" | "icon";
-type ButtonWeight = "solid" | "hollow" | "ghost";
+export type ButtonSize = "default" | "sm" | "lg" | "icon";
+export type ButtonWeight = "solid" | "hollow" | "ghost";
 
 const sizeClasses: Record<ButtonSize, string> = {
   default: "h-9 px-4 py-2 text-sm",
@@ -32,6 +32,23 @@ export type ButtonProps = Omit<
   children?: React.ReactNode;
 };
 
+export function getButtonClassName({
+  className,
+  size = "default",
+  weight = "solid",
+}: {
+  className?: string;
+  size?: ButtonSize;
+  weight?: ButtonWeight;
+}) {
+  return cn(
+    "inline-flex cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-md font-medium transition-colors outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50",
+    sizeClasses[size],
+    weightClasses[weight],
+    className,
+  );
+}
+
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   (
     {
@@ -51,12 +68,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     return (
       <Comp
         ref={ref}
-        className={cn(
-          "inline-flex cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-md font-medium transition-colors outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50",
-          sizeClasses[size],
-          weightClasses[weight],
-          className,
-        )}
+        className={getButtonClassName({ className, size, weight })}
         type={asChild ? undefined : type}
         {...props}
       >

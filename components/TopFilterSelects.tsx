@@ -275,7 +275,7 @@ function Combo({ label, options, disabled }: { label: string; options: { label: 
               placeholder="Search..."
               value={query}
             />
-            <div className="max-h-[300px] overflow-y-auto rounded-md border border-border p-1">
+            <div className="max-h-[300px] overflow-y-auto p-1">
               {filteredOptions.length === 0 ? (
                 <p className="px-2 py-3 text-sm text-muted-foreground">No results</p>
               ) : (
